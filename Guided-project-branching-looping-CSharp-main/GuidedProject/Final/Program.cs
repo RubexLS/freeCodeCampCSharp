@@ -52,9 +52,9 @@ for (int i = 0; i < maxPets; i++)
             animalSpecies = "cat";
             animalID = "c4";
             animalAge = "?";
-            animalPhysicalDescription = "";
-            animalPersonalityDescription = "";
-            animalNickname = "";
+            animalPhysicalDescription = "tbd";
+            animalPersonalityDescription = "tbd";
+            animalNickname = "tbd";
             break;
 
         default:
@@ -275,6 +275,8 @@ do
             string whitoutAge = "";
             int countAgeMissing = 0;
             List<int> missingAge = new List<int>();
+
+            //Muestra los ID con los datos ausentes
             Console.WriteLine("ID with missing age:");
             for (int i = 0; i < maxPets; i++)
             {
@@ -287,6 +289,7 @@ do
                 }
             }
 
+            // consulta si se quiere realizar la actualizacion de datos
             List<string> listID = new List<string>();
             Console.WriteLine("do you want to update age?(yes = enter anything / no = n)");
             String answerAge = Console.ReadLine()!.ToLower();
@@ -301,6 +304,7 @@ do
                 }
                 else
                 {
+                    //Consulta cual de los ID mostrados es el que se quiere actualizar
                     Console.WriteLine("What is the ID you want to update?");
                     foreach(int i in missingAge)
                     {
@@ -311,6 +315,7 @@ do
 
                     string chose = Console.ReadLine()!;
 
+                    //actualizacion de la edad
                     int age;
                     bool valid = false;
 
@@ -329,6 +334,7 @@ do
                         }
                     }
 
+                    //actualizacion de la descripcion fisica
                     string enterDescription;
                     do
                     {
@@ -345,9 +351,7 @@ do
                     }
                 }
             }
-
             
-
             Console.WriteLine("\n\rAge and physical description fields are complete for all of our friends.");
             Console.WriteLine("Press the Enter key to continue");
             readResult = Console.ReadLine();
@@ -355,8 +359,82 @@ do
 
         case "4":
             // Ensure animal nicknames and personality descriptions are complete
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
-            Console.WriteLine("Press the Enter key to continue.");
+            string whitoutNick = "";
+            List<int> missingNick = new List<int>();
+
+            //Muestra los ID con los datos ausentes
+            Console.WriteLine("ID with missing nick and personality description:");
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 3] == "Nickname: tbd")
+                {
+                    whitoutNick = ourAnimals[i, 0].Remove(0,6);
+                    missingNick.Add(i);
+                    if(whitoutNick != "")
+                        Console.WriteLine(whitoutNick);
+                }
+            }
+
+            // consulta si se quiere realizar la actualizacion de datos
+            List<string> listNickID = new List<string>();
+            Console.WriteLine("do you want to update Nick?(yes = enter anything / no = n)");
+            String answerNick = Console.ReadLine()!.ToLower();
+
+            if(answerNick != null)
+            {
+                if(answerNick == "n")
+                {
+                    Console.WriteLine("\n\rPress the Enter key to continue");
+                    readResult = Console.ReadLine();
+                    break;
+                }
+                else
+                {
+                    //Consulta cual de los ID mostrados es el que se quiere actualizar
+                    Console.WriteLine("What is the ID you want to update?");
+                    foreach(int i in missingNick)
+                    {
+                        Console.WriteLine(ourAnimals[i, 0].Remove(0,6));
+                        listNickID.Add(ourAnimals[i, 0].Remove(0,6));
+                    }
+                    Console.WriteLine();
+
+                    string choseID = Console.ReadLine()!;
+
+                    //Actualizacion del nickname
+                    string enterNick;
+                    do
+                    {
+                        Console.WriteLine($"Enter a nickname for ID #: {choseID}");
+                        enterNick = Console.ReadLine()!;
+                    }while(enterNick == "");
+
+                    for(int x = 0; x < listNickID.Count; x++)
+                    {
+                        if(choseID == listNickID[x])
+                            ourAnimals[missingNick[x], 3] = "Nickname: " + enterNick;
+                    }
+
+                    //Actualizacion de la descripcion de personalidad
+                    string personalityDescription;
+                    do
+                    {
+                        Console.WriteLine($"Enter a personality description for ID #: {choseID} (likes or dislikes, tricks, energy level)");
+                        personalityDescription = Console.ReadLine()!;
+                    }while(personalityDescription == "");
+
+                    for(int x = 0; x < listNickID.Count; x++)
+                    {
+                        if(choseID == listNickID[x])
+                        {
+                            ourAnimals[missingNick[x], 5] = "Personality: " + personalityDescription;
+                        }
+                    }
+                }
+            }
+            
+            Console.WriteLine("\n\rNickname and personality description fields are complete for all of our friends.");
+            Console.WriteLine("Press the Enter key to continue");
             readResult = Console.ReadLine();
             break;
 
