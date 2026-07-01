@@ -272,8 +272,84 @@ do
 
         case "3":
             // Ensure animal ages and physical descriptions are complete
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
-            Console.WriteLine("Press the Enter key to continue.");
+            string whitoutAge = "";
+            int countAgeMissing = 0;
+            List<int> missingAge = new List<int>();
+            Console.WriteLine("ID with missing age:");
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 2] == "Age: ?")
+                {
+                    countAgeMissing++;
+                    whitoutAge = ourAnimals[i, 0].Remove(0,6);
+                    missingAge.Add(i);
+                    Console.WriteLine(whitoutAge);
+                }
+            }
+
+            List<string> listID = new List<string>();
+            Console.WriteLine("do you want to update age?(yes = enter anything / no = n)");
+            String answerAge = Console.ReadLine()!.ToLower();
+
+            if(answerAge != null)
+            {
+                if(answerAge == "n")
+                {
+                    Console.WriteLine("\n\rPress the Enter key to continue");
+                    readResult = Console.ReadLine();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("What is the ID you want to update?");
+                    foreach(int i in missingAge)
+                    {
+                        Console.WriteLine(ourAnimals[i, 0].Remove(0,6));
+                        listID.Add(ourAnimals[i, 0].Remove(0,6));
+                    }
+                    Console.WriteLine();
+
+                    string chose = Console.ReadLine()!;
+
+                    int age;
+                    bool valid = false;
+
+                    do
+                    {
+                        Console.WriteLine($"Enter an age for ID #: {chose}");
+                        string enterAge = Console.ReadLine()!;
+                        valid = int.TryParse(enterAge, out age);
+                    }while(valid == false);
+
+                    for(int x = 0; x < listID.Count; x++)
+                    {
+                        if(chose == listID[x])
+                        {
+                            ourAnimals[missingAge[x], 2] = "Age: " + age;
+                        }
+                    }
+
+                    string enterDescription;
+                    do
+                    {
+                        Console.WriteLine($"Enter a physical description for ID #: {chose} (size, color, breed, gender, weight, housebroken)");
+                        enterDescription = Console.ReadLine()!;
+                    }while(enterDescription == "");
+
+                    for(int x = 0; x < listID.Count; x++)
+                    {
+                        if(chose == listID[x])
+                        {
+                            ourAnimals[missingAge[x], 4] = "Physical description: " + enterDescription;
+                        }
+                    }
+                }
+            }
+
+            
+
+            Console.WriteLine("\n\rAge and physical description fields are complete for all of our friends.");
+            Console.WriteLine("Press the Enter key to continue");
             readResult = Console.ReadLine();
             break;
 
