@@ -1,4 +1,6 @@
 ﻿// #1 the ourAnimals array will store the following: 
+using System.Reflection.PortableExecutable;
+
 string animalSpecies = "";
 string animalID = "";
 string animalAge = "";
@@ -126,21 +128,23 @@ do
 
         case "2":
             // Display all dogs with a specified characteristic
-            string dogCharacteristic = "";
+            List<string> dogCharacteristic = new List<string>();
 
-            while (dogCharacteristic == "")
+            while (dogCharacteristic.Count == 0)
             {
                 // have the user enter physical characteristics to search for
-                Console.WriteLine($"\nEnter one desired dog characteristics to search for");
+                Console.WriteLine($"\nEnter dog characteristics to search for separated by commas");
                 readResult = Console.ReadLine();
                 if (readResult != null)
                 {
-                    dogCharacteristic = readResult.ToLower().Trim();
+                    dogCharacteristic = readResult.ToLower().Trim().Split(", ").ToList();
+                    dogCharacteristic.Sort();
                 }
             }
-
+            
             string dogDescription = "";
             bool noMatchesDog = true;
+            string[] animation = ["|", "/", "—", "\\", "*"];
 
             // #6 loop through the ourAnimals array to search for matching animals
             for (int i = 0; i < maxPets; i++)
@@ -148,20 +152,36 @@ do
                 if(ourAnimals[i,1].Contains("dog"))
                 {
                     // #7 Search combined descriptions and report results
+                    Console.WriteLine("");
                     dogDescription = ourAnimals[i, 4] + "\n" + ourAnimals[i, 5];
-                    if(dogDescription.Contains(dogCharacteristic))
+                    foreach(string Characteristic in dogCharacteristic)
                     {
-                        Console.WriteLine($"\nOur dog {ourAnimals[i, 3]} is a match!");
+                        for(int j = 3; j >= 0; j--)
+                        {
+                            for (int k = 0; k < 5; k++)
+                            {
+                                Console.Write($"\rsearching...{Characteristic}  {animation[k]}  {j}");
+                                Thread.Sleep(100);
+                            }
+                        Console.Write($"\r");
+                        }
+                        if(dogDescription.Contains(Characteristic))
+                        {
+                            Console.WriteLine($"Our dog {ourAnimals[i, 3]} matches your search for {Characteristic}");
+                            noMatchesDog = false;
+                        }
+                    }
+                    if(!noMatchesDog)
+                    {
+                        Console.WriteLine($"{ourAnimals[i, 3]} ({ourAnimals[i, 0]})");
                         Console.WriteLine(dogDescription);
-
-                        noMatchesDog = false;
                     }
                 }
             }
 
             if (noMatchesDog)
             {
-                Console.WriteLine("None of our dogs are a match found for: " + dogCharacteristic);
+                Console.WriteLine("None of our dogs are a match found for: " + readResult);
             }
 
             Console.WriteLine("Press the Enter key to continue.");
