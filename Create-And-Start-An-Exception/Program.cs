@@ -26,7 +26,7 @@ do
         Console.WriteLine(ex.Message);
         Console.WriteLine($"The upper bound must be greater than {lowerBound}");
         Console.Write($"Enter a new upper bound (or enter Exit to quit): ");
-        string? userResponse = Console.ReadLine();
+        string? userResponse = Console.ReadLine()!;
         if (userResponse.ToLower().Contains("exit"))
         {
             exit = true;
@@ -48,7 +48,7 @@ static decimal AverageOfEvenNumbers(int lowerBound, int upperBound)
     {
         throw new ArgumentOutOfRangeException("upperBound", "ArgumentOutOfRangeException: upper bound must be greater than lower bound.");
     }
-    
+
     int sum = 0;
     int count = 0;
     decimal average = 0;
